@@ -9,6 +9,7 @@ public class Blade : MonoBehaviour
     private TrailRenderer bladeTrail;
     private bool slicing;
 
+    public GameObject SparkEffect;
     public Vector3 direction {  get; private set; }
     public float minSliceVelocity = 0.01f;
     public float sliceForce = 5f;
@@ -33,13 +34,13 @@ public class Blade : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             StartSlicing();
-        } else if (Input.GetMouseButtonUp(0))
+        } else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
             StopSlicing();
-        } else if(slicing)
+        } else if(slicing && Input.touchCount > 0)
         {
             ContinueSlicing();
         }
@@ -52,6 +53,10 @@ public class Blade : MonoBehaviour
 
         slicing = true;
         bladeCollider.enabled = true;
+        SparkEffect.SetActive(true);
+        //var emission = SparkEffect.emission; // Stores the module in a local variable
+        //emission.enabled = true; // Applies the new value directly to the Particle System
+
         bladeTrail.enabled = true;
         bladeTrail.Clear();
     }
@@ -60,6 +65,9 @@ public class Blade : MonoBehaviour
     {
         slicing = false;
         bladeCollider.enabled = false;
+        SparkEffect.SetActive(false);
+        //var emission = SparkEffect.emission; // Stores the module in a local variable
+        //emission.enabled = false;
         bladeTrail.enabled = false;
     }
     private void ContinueSlicing()
