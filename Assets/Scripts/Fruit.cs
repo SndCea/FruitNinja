@@ -44,6 +44,7 @@ public class Fruit : MonoBehaviour
         {
             Blade blade = other.GetComponent<Blade>();
             Slice(blade.direction, blade.transform.position, blade.sliceForce);
+            GameManager.Instance.ScorePoints();
         }
     }
     void Start()
