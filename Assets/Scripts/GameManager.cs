@@ -9,7 +9,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int points;
+    public int missing;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI missingText;
+    public List<Cross> missingCrosses;
     private void Awake()
     {
         #region Singleton
@@ -29,6 +32,10 @@ public class GameManager : MonoBehaviour
     {
         this.points = 0;
         scoreText.text = "0";
+        foreach(Cross cross in missingCrosses)
+        {
+            cross.Active = false;
+        }
     }
 
     void Update()
@@ -41,6 +48,19 @@ public class GameManager : MonoBehaviour
         this.points ++;
         scoreText.text = this.points.ToString();
 
+    }
+
+    public void MissingDetected ()
+    {
+        foreach (Cross cross in missingCrosses)
+        {
+            if (!cross.Active)
+            {
+                cross.Active = true;
+                break;
+            }
+        }
+        
     }
 
 }
