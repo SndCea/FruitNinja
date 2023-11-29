@@ -22,9 +22,15 @@ public class SpawnerFruit : MonoBehaviour
     }
     private void OnEnable()
     {
+        GameManager.Instance.GameOverEvent += StopFruit;
         StartCoroutine(SpawnFruit());
     }
     private void OnDisable()
+    {
+        StopAllCoroutines();
+        GameManager.Instance.GameOverEvent -= StopFruit;
+    }
+    public void StopFruit()
     {
         StopAllCoroutines();
     }

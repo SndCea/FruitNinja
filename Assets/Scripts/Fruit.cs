@@ -47,6 +47,18 @@ public class Fruit : MonoBehaviour
             GameManager.Instance.ScorePoints();
         }
     }
+    private void OnEnable()
+    {
+        GameManager.Instance.GameOverEvent += StopFruit;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.GameOverEvent -= StopFruit;
+    }
+    public void StopFruit ()
+    {
+        Destroy(gameObject);
+    }
     void Start()
     {
         

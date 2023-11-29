@@ -11,31 +11,45 @@ public class GameManager : MonoBehaviour
     public int points;
     public int missing;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI gameOverScoreText;
     public TextMeshProUGUI missingText;
     public List<Cross> missingCrosses;
+    public GameObject GameOverCanvas;
+    public GameObject GameCanvas;
+    public delegate void GameOverDelegate();
+    public event GameOverDelegate GameOverEvent;
+
+
     private void Awake()
     {
         #region Singleton
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         } else
         {
             Destroy(this);
         }
 
-#endregion
+        #endregion
+        InicializeGame();
 
     }
-    void Start()
+    private void InicializeGame()
     {
+        Debug.Log("INICIO");
         this.points = 0;
         scoreText.text = "0";
-        foreach(Cross cross in missingCrosses)
+        foreach (Cross cross in missingCrosses)
         {
             cross.Active = false;
         }
+        GameOverCanvas.SetActive(false);
+        GameCanvas.SetActive(true);
+    }
+    void Start()
+    {
     }
 
     void Update()
@@ -52,14 +66,30 @@ public class GameManager : MonoBehaviour
 
     public void MissingDetected ()
     {
-        foreach (Cross cross in missingCrosses)
+        missing++;
+        if (missing >= missingCrosses.Count)
         {
-            if (!cross.Active)
+            if (GameOverEvent != null)
             {
-                cross.Active = true;
-                break;
+                GameOverEvent();
+                gameOverScoreText.text = "Score: " + points.ToString();
+                PlayerPrefs.SetInt("LastPunctuation", points);
+                GameCanvas.SetActive(false);
+                GameOverCanvas.SetActive(true);
+            }
+            
+        } else
+        {
+            foreach (Cross cross in missingCrosses)
+            {
+                if (!cross.Active)
+                {
+                    cross.Active = true;
+                    break;
+                }
             }
         }
+        
         
     }
 

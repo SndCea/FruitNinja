@@ -13,6 +13,7 @@ public class Blade : MonoBehaviour
     public Vector3 direction {  get; private set; }
     public float minSliceVelocity = 0.01f;
     public float sliceForce = 5f;
+    private bool gameover;
     private void Awake()
     {
         mainCamera = Camera.main;
@@ -22,9 +23,19 @@ public class Blade : MonoBehaviour
     private void OnEnable()
     {
         StopSlicing();
+        gameover = false;
+        GameManager.Instance.GameOverEvent += GameOver;
+
     }
     private void OnDisable()
     {
+        StopSlicing();
+        GameManager.Instance.GameOverEvent -= GameOver;
+
+    }
+    public void GameOver()
+    {
+        gameover = true;
         StopSlicing();
     }
     void Start()
@@ -34,15 +45,19 @@ public class Blade : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            StartSlicing();
-        } else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            StopSlicing();
-        } else if(slicing && Input.touchCount > 0)
-        {
-            ContinueSlicing();
+        if (!gameover) {
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                StartSlicing();
+            }
+            else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                StopSlicing();
+            }
+            else if (slicing && Input.touchCount > 0)
+            {
+                ContinueSlicing();
+            }
         }
     }
     private void StartSlicing ()
