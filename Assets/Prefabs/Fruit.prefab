@@ -5072,6 +5072,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6303116636865536453, guid: 133461ef44126ac4f8121adfec0f415e, type: 3}
+      propertyPath: m_TagString
+      value: Broke
+      objectReference: {fileID: 0}
+    - target: {fileID: 243041194690276544, guid: 133461ef44126ac4f8121adfec0f415e, type: 3}
+      propertyPath: m_TagString
+      value: Broke
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 133461ef44126ac4f8121adfec0f415e, type: 3}
       propertyPath: m_Name
       value: Sliced
@@ -5079,6 +5087,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 133461ef44126ac4f8121adfec0f415e, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 133461ef44126ac4f8121adfec0f415e, type: 3}
+      propertyPath: m_TagString
+      value: Broke
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 133461ef44126ac4f8121adfec0f415e, type: 3}

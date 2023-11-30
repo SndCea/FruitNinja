@@ -8,6 +8,7 @@ public class Blade : MonoBehaviour
     private Collider bladeCollider;
     private TrailRenderer bladeTrail;
     private bool slicing;
+    private AudioSource audioSource;
 
     public GameObject SparkEffect;
     public Vector3 direction {  get; private set; }
@@ -19,6 +20,7 @@ public class Blade : MonoBehaviour
         mainCamera = Camera.main;
         bladeCollider = GetComponent<Collider>();
         bladeTrail = GetComponentInChildren<TrailRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
     private void OnEnable()
     {
@@ -71,7 +73,7 @@ public class Blade : MonoBehaviour
         SparkEffect.SetActive(true);
         //var emission = SparkEffect.emission; // Stores the module in a local variable
         //emission.enabled = true; // Applies the new value directly to the Particle System
-
+        SoundHit();
         bladeTrail.enabled = true;
         bladeTrail.Clear();
     }
@@ -97,5 +99,14 @@ public class Blade : MonoBehaviour
         bladeCollider.enabled = velocity > minSliceVelocity;
 
         transform.position = newPosition;
+    }
+
+    public void SoundHit()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+            return;
+        }
     }
 }

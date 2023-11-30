@@ -16,6 +16,9 @@ public class MissingDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.Instance.MissingDetected();
+        if (!other.gameObject.CompareTag("Broke"))
+        {
+            GameManager.Instance.MissingDetected();
+        }
     }
 }

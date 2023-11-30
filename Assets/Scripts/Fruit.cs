@@ -43,6 +43,7 @@ public class Fruit : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Blade blade = other.GetComponent<Blade>();
+            blade.SoundHit();
             Slice(blade.direction, blade.transform.position, blade.sliceForce);
             GameManager.Instance.ScorePoints();
         }
