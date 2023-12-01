@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using GoogleMobileAds;
+using GoogleMobileAds.Api;
 
 public class MenuManager : MonoBehaviour
 {
+    public string appID;
+    public string intersitialAdUnityID;
+    public string intersitialID;
+    private InterstitialAd interstitialAd;
     public TextMeshProUGUI lastPuntuationText;
     public TextMeshProUGUI rewardCanvasText;
     public TextMeshProUGUI rewardMenuText;
@@ -22,12 +28,22 @@ public class MenuManager : MonoBehaviour
         ResetPowerUp();
         rewardMenuText.text = "number of lifes: \n " + PlayerPrefs.GetInt("NumFallos") ;
         lastPuntuationText.text = "Last Punctuation: \n " + PlayerPrefs.GetInt("LastPunctuation") + " points";
+        //InitializeAds();
     }
 
     void Update()
     {
         
     }
+
+    //private void InitializeAds()
+    //{
+
+    //    MobileAds.Initialize(initStatus => { });
+    //    this.interstitialAd = new InterstitialAd(intersitialID);
+
+    //    interstitialAd.LoadAd(new AdRequest.Builder().Build());
+    //}
     public void Reward()
     {
         if (!rewardedGiven)
