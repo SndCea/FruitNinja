@@ -8,10 +8,8 @@ using GoogleMobileAds.Api;
 
 public class MenuManager : MonoBehaviour
 {
-    public string appID;
-    public string intersitialAdUnityID;
-    public string intersitialID;
-    private InterstitialAd interstitialAd;
+    private InterstitialAd interstitial;
+    private string adUnitId;
     public TextMeshProUGUI lastPuntuationText;
     public TextMeshProUGUI rewardCanvasText;
     public TextMeshProUGUI rewardMenuText;
@@ -29,21 +27,40 @@ public class MenuManager : MonoBehaviour
         rewardMenuText.text = "number of lifes: \n " + PlayerPrefs.GetInt("NumFallos") ;
         lastPuntuationText.text = "Last Punctuation: \n " + PlayerPrefs.GetInt("LastPunctuation") + " points";
         //InitializeAds();
+        RequestInterstitial();
     }
+    private void RequestInterstitial()
+    {
+        adUnitId = "ca-app-pub-5574905459463986/2361330646";
 
-    void Update()
+        // Clean up interstitial before using it
+        if (interstitial != null)
+        {
+            interstitial.Destroy();
+        }
+
+        AdRequest request = new AdRequest.Builder().Build();
+        InterstitialAd.Load(adUnitId, request, (InterstitialAd ad, LoadAdError loadAdError) =>
+        {
+            if (loadAdError != null)
+            {
+                return;
+            }
+            else
+            if (ad == null)
+            {
+                return;
+            }
+            Debug.Log("Interstitial ad loaded");
+            interstitial = ad;
+
+        });
+    }
+    private void Update()
     {
         
     }
 
-    //private void InitializeAds()
-    //{
-
-    //    MobileAds.Initialize(initStatus => { });
-    //    this.interstitialAd = new InterstitialAd(intersitialID);
-
-    //    interstitialAd.LoadAd(new AdRequest.Builder().Build());
-    //}
     public void Reward()
     {
         if (!rewardedGiven)
@@ -57,7 +74,8 @@ public class MenuManager : MonoBehaviour
             MenuCanvas.SetActive(false);
             RewardCanvas.SetActive(true);
 
-            rewardedGiven = true;
+            rewardedGiven = true; 
+            interstitial.Show();
         }
         
     }
