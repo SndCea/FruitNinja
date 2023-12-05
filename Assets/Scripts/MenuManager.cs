@@ -8,7 +8,6 @@ using GoogleMobileAds.Api;
 
 public class MenuManager : MonoBehaviour
 {
-    private InterstitialAd interstitial;
     private string adUnitId;
     public TextMeshProUGUI lastPuntuationText;
     public TextMeshProUGUI rewardCanvasText;
@@ -27,35 +26,8 @@ public class MenuManager : MonoBehaviour
         rewardMenuText.text = "number of lifes: \n " + PlayerPrefs.GetInt("NumFallos") ;
         lastPuntuationText.text = "Last Punctuation: \n " + PlayerPrefs.GetInt("LastPunctuation") + " points";
         //InitializeAds();
-        RequestInterstitial();
     }
-    private void RequestInterstitial()
-    {
-        adUnitId = "ca-app-pub-5574905459463986/2361330646";
-
-        // Clean up interstitial before using it
-        if (interstitial != null)
-        {
-            interstitial.Destroy();
-        }
-
-        AdRequest request = new AdRequest.Builder().Build();
-        InterstitialAd.Load(adUnitId, request, (InterstitialAd ad, LoadAdError loadAdError) =>
-        {
-            if (loadAdError != null)
-            {
-                return;
-            }
-            else
-            if (ad == null)
-            {
-                return;
-            }
-            Debug.Log("Interstitial ad loaded");
-            interstitial = ad;
-
-        });
-    }
+    
     private void Update()
     {
         
@@ -75,7 +47,6 @@ public class MenuManager : MonoBehaviour
             RewardCanvas.SetActive(true);
 
             rewardedGiven = true; 
-            interstitial.Show();
         }
         
     }

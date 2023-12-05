@@ -1,12 +1,17 @@
+using GoogleMobileAds.Api;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+    private InterstitialAd interstitial;
+    private string adUnitId;
     public static GameManager Instance;
     private AudioSource audioSource;
     public int points;
@@ -18,6 +23,7 @@ public class GameManager : MonoBehaviour
     public Cross [] missingCrosses;
     public GameObject GameOverCanvas;
     public GameObject GameCanvas;
+    public GameObject TransitionOut;
     public delegate void GameOverDelegate();
     public event GameOverDelegate GameOverEvent;
     public AudioClip FailAudioClip;
@@ -49,6 +55,7 @@ public class GameManager : MonoBehaviour
         SetCrosses();
         GameOverCanvas.SetActive(false);
         GameCanvas.SetActive(true);
+        RequestInterstitial();
     }
     private void SetCrosses()
     {
@@ -69,8 +76,57 @@ public class GameManager : MonoBehaviour
     void Start()
     {
     }
+    private void RequestInterstitial()
+    {
+        adUnitId = "ca-app-pub-5574905459463986/2361330646";
 
-    void Update()
+        // Clean up interstitial before using it
+        if (interstitial != null)
+        {
+            interstitial.Destroy();
+        }
+
+        AdRequest request = new AdRequest.Builder().Build();
+        InterstitialAd.Load(adUnitId, request, (InterstitialAd ad, LoadAdError loadAdError) =>
+        {
+            if (loadAdError != null)
+            {
+                return;
+            }
+            else
+            if (ad == null)
+            {
+                return;
+            }
+            Debug.Log("Interstitial ad loaded");
+            interstitial = ad;
+
+        });
+    }
+
+    public void ShowInterstitial()
+    {
+        interstitial.Show();
+        RegisterEventHandlers(interstitial);
+    }
+    private void NextScene ()
+    {
+        TransitionOut.SetActive(true);
+    }
+    private void RegisterEventHandlers(InterstitialAd interstitialAd)
+    {
+        // Raised when the ad closed full screen content.
+        interstitialAd.OnAdFullScreenContentClosed += () =>
+        {
+            NextScene();
+        };
+        // Raised when the ad failed to open full screen content.
+        interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            NextScene();
+        };
+    }
+        void Update()
     {
         
     }
